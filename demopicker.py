@@ -1,19 +1,19 @@
 # Demo Picker by jadc
 
-import argparse, zipfile, random
+import argparse, csv, random
 from pathlib import Path
 from datetime import datetime
 
 if __name__ == "__main__":
     p = argparse.ArgumentParser()
-    p.add_argument("zip", type=str, help="submissions zip (from 'Download All Submissions' in eClass)")
+    p.add_argument("csv", type=str, help="students csv (from 'Participants' tab on eClass)")
     p.add_argument("-p", "--proportion", type=float, default=1/3, help="proportion of students that should demo (default 1/3)")
     p.add_argument("-d", "--dir", type=str, default="demos", help="directory to store demo lists (default './demos')")
     args = p.parse_args()
 
-    # Extract names from zip
-    z = zipfile.ZipFile(args.zip)
-    names = dict( (x.split("_")[0], 0) for x in z.namelist() )
+    # Extract names from csv
+    with open(args.csv, "r") as f:
+        names = dict( (x[3], 0) for x in csv.reader(f) )
 
     # Compare names with history
     if Path(args.dir).is_dir():
