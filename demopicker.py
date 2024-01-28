@@ -13,6 +13,8 @@ if __name__ == "__main__":
 
     # Extract names from csv
     with open(args.csv, "r") as f:
+        reader = csv.reader(f)
+        next(reader)  # skip headings
         names = dict( (x[3], 0) for x in csv.reader(f) )
 
     # Compare names with history
